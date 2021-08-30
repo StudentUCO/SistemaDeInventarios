@@ -1,0 +1,7 @@
+<div class="container mt-4">
+    <div class="row row-cols-auto justify-content-center">
+        <div class="col mb-4" *ngFor="let product of productList">
+            <app-product-card class="mask" [product]="product" routerLink="/product-home" (click)="setProduct(product)"></app-product-card>
+        </div>
+    </div>
+</div>

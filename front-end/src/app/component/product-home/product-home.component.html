@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row mb-3">
+        <div class="col">
+            <img src="../../../assets/images/arduino-uno.webp" class="img-fluid" alt="Imagén de un Arduino Uno">
+        </div>
+        <div class="col">
+            <p class="fs-1 text-white">{{product?.name}}</p>
+            <p class="fs-1 text-white">Cantidad: {{product?.quantity}}</p>
+            <p class="fs-1 text-white">Precio: {{product?.price}}</p>
+            <p class="fs-1 text-white">Descripción:</p>
+            <p class="fs-3 text-white">{{product?.description}}</p>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="row row-cols-auto">
+                <div class="col">
+                    <button type="button" class="btn btn-primary" (click)="decreaseQuantity()">Salida</button>
+                </div>
+                <div class="col">
+                    <form>
+                        <input type="number" class="form-control" [formControl]="quantity">
+                    </form>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" (click)="addQuantity()">Entrada</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-success mx-4" (click)="setIsNew(true); showModal(true,'product-form');">Crear</button>
+            <button type="button" class="btn btn-success mx-4" (click)="setIsNew(false); showModal(true,'product-form');">Editar</button>
+            <button class="btn btn-danger mx-4">Eliminar</button>
+        </div>
+    </div>
+
+    <!-- Modales -->
+    <app-product-form [setIsNew]="isNew" [(product)]="product"></app-product-form>
+</div>

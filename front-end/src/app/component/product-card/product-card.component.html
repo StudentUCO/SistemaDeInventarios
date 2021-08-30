@@ -1,0 +1,10 @@
+<div class="card" style="width: 18rem;">
+    <img src="../../../assets/images/arduino-uno.webp" class="card-img-top" alt="Imagen de un Arduino Uno">
+    <div class="card-header">
+        <h5 class="card-title">{{product? product?.name : 'Default'}}</h5>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Cantidad: {{product?.quantity}} unidades</p>
+        <p class="card-text">Precio unidad: {{product?.price | currency}}</p>
+    </div>
+</div>

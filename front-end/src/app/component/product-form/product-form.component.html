@@ -1,0 +1,48 @@
+<!-- Modal -->
+<div class="modal fade" id="product-form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">{{isNew? 'Creación' : 'Edición'}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="form">
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div class="col">
+                                <label for="name-form">Producto:</label>
+                                <input id="name-form" type="text" class="form-control" formControlName="name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="quantity-form">Cantidad:</label>
+                                <input id="quantity-form" type="number" class="form-control" formControlName="quantity" *ngIf="isNew, else quantity">
+                                <ng-template #quantity>
+                                    <input id="quantity-form" type="number" class="form-control" formControlName="quantity" readonly>
+                                </ng-template>
+                            </div>
+                            <div class="col">
+                                <label for="price-form">Precio:</label>
+                                <input id="price-form" type="number" class="form-control" formControlName="price">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="description-form">Descripción:</label>
+                                <textarea class="form-control" id="description-form" cols="30" rows="10"
+                                    formControlName="description"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="showModal(false, 'product-form')">Cancelar</button>
+                <button type="button" class="btn btn-success" (click)="save()">{{isNew? 'Crear' : 'Editar'}}</button>
+            </div>
+        </div>
+    </div>
+</div>

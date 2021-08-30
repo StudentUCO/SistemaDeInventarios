@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "sistemadeinventario-bfe9f": {
+      "hosting": {
+        "front-end": [
+          "sistemadeinventario-bfe9f"
+        ]
+      }
+    }
+  }
+}

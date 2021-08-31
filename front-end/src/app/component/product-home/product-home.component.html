@@ -19,17 +19,25 @@
                 </div>
                 <div class="col">
                     <form>
-                        <input type="number" class="form-control" [formControl]="quantity">
+                        <input type="text" class="form-control" mask="separator.0" thousandSeparator="," [formControl]="quantity">
                     </form>
                 </div>
                 <div class="col">
                     <button type="button" class="btn btn-primary" (click)="addQuantity()">Entrada</button>
                 </div>
             </div>
+            <div class="row" *ngIf="quantity?.value > product.quantity && isDecrease">
+                <div class="alert alert-warning" role="alert">
+                    ⚠¡Advertencia!⚠ No hay disponibilidad suficiente del producto. Usted quiere retirar
+                    {{quantity?.value}} y solo hay disponibilidad de {{product?.quantity}}
+                </div>
+            </div>
         </div>
         <div class="col">
-            <button type="button" class="btn btn-success mx-4" (click)="setIsNew(true); showModal(true,'product-form');">Crear</button>
-            <button type="button" class="btn btn-success mx-4" (click)="setIsNew(false); showModal(true,'product-form');">Editar</button>
+            <button type="button" class="btn btn-success mx-4"
+                (click)="setIsNew(true); showModal(true,'product-form');">Crear</button>
+            <button type="button" class="btn btn-success mx-4"
+                (click)="setIsNew(false); showModal(true,'product-form');">Editar</button>
             <button class="btn btn-danger mx-4">Eliminar</button>
         </div>
     </div>

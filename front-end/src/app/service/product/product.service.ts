@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Product } from 'src/app/model/product.model';
 import { environment } from 'src/environments/environment';
 
@@ -8,9 +9,16 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductService {
 
-  product?: Product;
+  product!: Product;
+  
+  private productList = new BehaviorSubject<Product[]>([]);
+  customProductList = this.productList.asObservable();
 
   constructor(private http: HttpClient) { }
+
+  changeProductList(productList: Product[]): void {
+    this.productList.next(productList);
+  }
 
   getProducts(): Product[] {
     const list = [];
@@ -26,8 +34,13 @@ export class ProductService {
     return list;
   }
 
-  getProductBy(): Promise<Product[]> {
+  getProductList(): Promise<Product[]> {
     return this.http.get<Product[]>(environment.url).toPromise();
+  }
+
+  getProductBy(name: string): Promise<Product[]> {
+    console.log(name);
+    return this.http.get<Product[]>(environment.urlProducts).toPromise();
   }
 
   create(product: Product): Promise<Product> {

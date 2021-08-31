@@ -9,7 +9,15 @@ import { ProductCardComponent } from './component/product-card/product-card.comp
 import { HomeComponent } from './component/home/home.component';
 import { ProductHomeComponent } from './component/product-home/product-home.component';
 import { ProductFormComponent } from './component/product-form/product-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProductService } from './service/product/product.service';
+import { IConfig, NgxMaskModule } from 'ngx-mask';
+
+const maskConfigFunction: () => Partial<IConfig> = () => {
+  return {
+    validation: false,
+  };
+};
 
 @NgModule({
   declarations: [
@@ -24,9 +32,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    NgxMaskModule.forRoot(maskConfigFunction)
   ],
-  providers: [],
+  providers: [ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

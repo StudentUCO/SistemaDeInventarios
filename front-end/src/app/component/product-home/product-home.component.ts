@@ -13,6 +13,7 @@ export class ProductHomeComponent implements OnInit {
 
   @Input() product!: Product;
   isNew!: boolean;
+  isDecrease = false;
   quantity = new FormControl(0);
 
   constructor(private productService: ProductService) { }
@@ -20,17 +21,18 @@ export class ProductHomeComponent implements OnInit {
   ngOnInit(): void {
     if (this.productService.product) {
       this.product = this.productService.product;
+    } else {
+      this.product = {
+        id: 0,
+        name: 'Default',
+        quantity: 0,
+        price: 0,
+        description: 'Default'
+      };
     }
   }
 
   create() {
-    this.product = {
-      id: 0,
-      name: 'Default',
-      quantity: 0,
-      price: 0,
-      description: 'Default'
-    }
     console.log('create');
     this.productService.create(this.product).then(pto => console.log(pto));
   }
@@ -40,8 +42,11 @@ export class ProductHomeComponent implements OnInit {
   }
 
   decreaseQuantity(): void {
-    if ((this.product.quantity-this.quantity.value) >= 0) {
+    if (this.product.quantity >= this.quantity.value) {
       this.product.quantity -= this.quantity.value;
+      this.isDecrease = false;
+    } else {
+      this.isDecrease = true;
     }
   }
 

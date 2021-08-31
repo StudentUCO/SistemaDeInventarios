@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ProductService } from 'src/app/service/product/product.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  name = new FormControl('');
+
+  constructor(private productService: ProductService, private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  search(): void {
+    this.productService.getProductBy(this.name.value).then((list)=>{
+      this.productService.changeProductList(list);
+      this.router.navigate(['/home']);
+      console.log(list);
+    });
   }
 
 }

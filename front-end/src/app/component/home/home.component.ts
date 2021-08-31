@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Product } from 'src/app/model/product.model';
 import { ProductService } from 'src/app/service/product/product.service';
 
@@ -9,12 +9,12 @@ import { ProductService } from 'src/app/service/product/product.service';
 })
 export class HomeComponent implements OnInit {
 
-  productList: Product[] | undefined;
+  productList!: Product[];
 
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.productList = this.productService.getProducts();
+    this.productService.customProductList.subscribe(list => this.productList = list);
     //this.productService.getProductBy().then(list => this.productList = list);
   }
 

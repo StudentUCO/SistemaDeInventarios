@@ -35,11 +35,15 @@ export class ProductHomeComponent implements OnInit {
 
   addQuantity(): void {
     this.product.quantity += this.quantity.value;
+    this.productService.changeProduct(this.productService.product, this.product);
+    this.productService.update(this.product).then(product => this.product=product).catch(error => console.log(error));
   }
 
   decreaseQuantity(): void {
     if (this.product.quantity >= this.quantity.value) {
       this.product.quantity -= this.quantity.value;
+      this.productService.changeProduct(this.productService.product, this.product);
+      this.productService.update(this.product).then(product => this.product=product).catch(error => console.log(error));
       this.isDecrease = false;
     } else {
       this.isDecrease = true;

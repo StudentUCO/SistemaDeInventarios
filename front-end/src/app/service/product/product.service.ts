@@ -72,10 +72,11 @@ export class ProductService {
     this.productList.value.splice(this.productList.value.indexOf(product));
   }
 
-  buildProduct(form: FormGroup): Product {
+  buildProduct(form: FormGroup, productToUpdate?: Product): Product {
     console.log(form.value);
+    console.log(this.productList.value.length);
     let product: Product = {
-      id: this.productList.value.length,
+      id: productToUpdate?.id? productToUpdate.id : this.productList.value.length,
       ...form.value
     };
     return product;

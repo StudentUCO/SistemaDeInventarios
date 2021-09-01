@@ -18,11 +18,13 @@ export class HeaderComponent implements OnInit {
   }
 
   search(): void {
-    this.productService.getProductBy(this.name.value).then((list)=>{
-      this.productService.changeProductList(list);
-      this.router.navigate(['/home']);
-      console.log(list);
-    });
+    if (this.name.value !== '') {
+      this.productService.getProductBy(this.name.value).then((list)=>{
+        this.productService.changeProductList(list);
+        this.router.navigate(['/home']);
+        console.log(list);
+      });
+    }
   }
 
 }

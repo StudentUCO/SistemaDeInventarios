@@ -63,7 +63,9 @@ export class ProductFormComponent implements OnInit {
 
   update(): void {
     console.log('update');
+    console.log(this.product);
     this.product = this.productService.buildProduct(this.form);
+    console.log(this.product);
     this.productService.changeProduct(this.productService.product, this.product);
     this.productService.update(this.product).then(product=>this.product=product).catch(error=>console.log(error));
   }

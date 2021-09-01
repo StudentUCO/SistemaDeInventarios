@@ -16,7 +16,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.productService.getProductList().then(list => {
       this.productList = list;
+      this.productService.changeProductList(list);
       console.log(list);
+      console.log(list.length);
     }).catch(error=>console.log(error));
     this.productService.customProductList.subscribe(list => this.productList = list);
   }

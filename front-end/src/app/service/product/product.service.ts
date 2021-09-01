@@ -36,7 +36,7 @@ export class ProductService {
   }
 
   getProductList(): Promise<Product[]> {
-    if (!this.productList) {
+    if (!this.productList || this.productList.value.length === 0) {
       return this.http.get<Product[]>(environment.url).toPromise();
     }
     return this.productList.toPromise();

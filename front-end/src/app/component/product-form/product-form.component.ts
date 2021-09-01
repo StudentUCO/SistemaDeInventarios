@@ -55,7 +55,10 @@ export class ProductFormComponent implements OnInit {
     console.log('create');
     this.product = this.productService.buildProduct(this.form);
     this.productService.addProduct(this.product);
-    this.productService.create(this.product).then(product=>this.product=product).catch(error=>console.log(error));
+    this.productService.create(this.product).then(product=>{
+      this.product=product;
+      console.log(product);
+    }).catch(error=>console.log(error));
   }
 
   update(): void {

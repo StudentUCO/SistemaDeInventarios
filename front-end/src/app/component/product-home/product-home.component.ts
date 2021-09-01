@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Product } from 'src/app/model/product.model';
 import { ProductService } from 'src/app/service/product/product.service';
 import { UtilModal } from 'src/app/util/util-modal';
@@ -16,7 +17,7 @@ export class ProductHomeComponent implements OnInit {
   isDecrease = false;
   quantity = new FormControl(0);
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.productService.product) {
@@ -32,11 +33,6 @@ export class ProductHomeComponent implements OnInit {
     }
   }
 
-  create() {
-    console.log('create');
-    this.productService.create(this.product).then(pto => console.log(pto));
-  }
-
   addQuantity(): void {
     this.product.quantity += this.quantity.value;
   }
@@ -48,6 +44,12 @@ export class ProductHomeComponent implements OnInit {
     } else {
       this.isDecrease = true;
     }
+  }
+
+  delete(): void {
+    this.productService.removeProduct(this.product);
+    this.productService.delete(this.product).then(product=>console.log(product)).catch(error=>console.log(error));
+    this.router.navigate(['/home']);
   }
 
   showModal(show: boolean, id: string): void {

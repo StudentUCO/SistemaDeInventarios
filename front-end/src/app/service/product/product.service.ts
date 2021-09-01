@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class ProductService {
 
   product!: Product;
-  
+
   private productList = new BehaviorSubject<Product[]>([]);
   customProductList = this.productList.asObservable();
 
@@ -23,12 +23,12 @@ export class ProductService {
 
   getProducts(): Product[] {
     const list = [];
-    for(let i=1; i<=10; i++) {
+    for (let i = 1; i <= 10; i++) {
       list.push({
         id: i,
         name: 'Arduino Uno ' + i,
-        quantity: i*123,
-        price: i*9876,
+        quantity: i * 123,
+        price: i * 9876,
         description: 'Default ' + i
       });
     }
@@ -56,7 +56,7 @@ export class ProductService {
   }
 
   delete(product: Product): Promise<Product> {
-    return this.http.delete<Product>(environment.url+'/'+product.id).toPromise();
+    return this.http.delete<Product>(environment.url + '/' + product.id).toPromise();
   }
 
   addProduct(product: Product): void {
@@ -66,6 +66,10 @@ export class ProductService {
 
   changeProduct(oldProduct: Product, newProduct: Product): void {
     this.productList.value[this.productList.value.indexOf(oldProduct)] = newProduct;
+  }
+
+  removeProduct(product: Product): void {
+    this.productList.value.splice(this.productList.value.indexOf(product));
   }
 
   buildProduct(form: FormGroup): Product {

@@ -13,8 +13,7 @@ export class ProductFormComponent implements OnInit {
 
   isNew!: boolean;
   @Input() set setIsNew(isNew: boolean) {
-    this.isNew=isNew
-    console.log(isNew);
+    this.isNew=isNew;
   }
   @Input() product!: Product;
   @Output() productChange = new EventEmitter<Product>();
@@ -56,12 +55,14 @@ export class ProductFormComponent implements OnInit {
     console.log('create');
     this.product = this.productService.buildProduct(this.form);
     this.productService.addProduct(this.product);
+    this.productService.create(this.product).then(product=>this.product=product).catch(error=>console.log(error));
   }
 
   update(): void {
     console.log('update');
     this.product = this.productService.buildProduct(this.form);
     this.productService.changeProduct(this.productService.product, this.product);
+    this.productService.update(this.product).then(product=>this.product=product).catch(error=>console.log(error));
   }
 
   showModal(show: boolean, id: string): void {

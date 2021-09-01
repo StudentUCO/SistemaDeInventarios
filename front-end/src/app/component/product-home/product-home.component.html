@@ -38,7 +38,7 @@
                 (click)="setIsNew(true); showModal(true,'product-form');">Crear</button>
             <button type="button" class="btn btn-success mx-4"
                 (click)="setIsNew(false); showModal(true,'product-form');">Editar</button>
-            <button class="btn btn-danger mx-4">Eliminar</button>
+            <button class="btn btn-danger mx-4" (click)="delete();">Eliminar</button>
         </div>
     </div>
 

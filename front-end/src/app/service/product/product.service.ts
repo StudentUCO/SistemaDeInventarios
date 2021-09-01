@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { Product } from 'src/app/model/product.model';
 import { environment } from 'src/environments/environment';
@@ -35,7 +36,10 @@ export class ProductService {
   }
 
   getProductList(): Promise<Product[]> {
-    return this.http.get<Product[]>(environment.url).toPromise();
+    if (!this.productList) {
+      return this.http.get<Product[]>(environment.url).toPromise();
+    }
+    return this.productList.toPromise();
   }
 
   getProductBy(name: string): Promise<Product[]> {
@@ -52,6 +56,24 @@ export class ProductService {
   }
 
   delete(product: Product): Promise<Product> {
-    return this.http.delete<Product>(environment.url).toPromise();
+    return this.http.delete<Product>(environment.url+'/'+product.id).toPromise();
+  }
+
+  addProduct(product: Product): void {
+    this.productList.value.push(product);
+    console.log(this.productList.value);
+  }
+
+  changeProduct(oldProduct: Product, newProduct: Product): void {
+    this.productList.value[this.productList.value.indexOf(oldProduct)] = newProduct;
+  }
+
+  buildProduct(form: FormGroup): Product {
+    console.log(form.value);
+    let product: Product = {
+      id: this.productList.value.length,
+      ...form.value
+    };
+    return product;
   }
 }

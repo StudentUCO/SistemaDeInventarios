@@ -24,13 +24,13 @@ export class ProductFormComponent implements OnInit {
     this.form?.patchValue(product);
   };
   product?: Product; */
-  form?: FormGroup;
+  form!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private productService: ProductService) { }
 
   ngOnInit(): void {
     this.buildForm();
-    this.product? this.form?.patchValue(this.product) : '';
+    this.product? this.form?.patchValue(this.product) : undefined;
   }
 
   buildForm(): void {
@@ -48,22 +48,20 @@ export class ProductFormComponent implements OnInit {
     } else {
       this.update();
     }
-    console.log(this.product);
     this.productChange.emit(this.product);
     this.showModal(false, 'product-form');
   }
 
   create(): void {
     console.log('create');
-    this.product = this.form?.value;
-    this.productService.getProducts().push(this.product);
-    console.log(this.productService.getProducts());
+    this.product = this.productService.buildProduct(this.form);
+    this.productService.addProduct(this.product);
   }
 
   update(): void {
     console.log('update');
-    this.product = this.form?.value;
-    this.productService.product = this.product;
+    this.product = this.productService.buildProduct(this.form);
+    this.productService.changeProduct(this.productService.product, this.product);
   }
 
   showModal(show: boolean, id: string): void {

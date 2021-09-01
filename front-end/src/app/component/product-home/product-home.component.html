@@ -5,8 +5,8 @@
         </div>
         <div class="col">
             <p class="fs-1 text-white">{{product?.name}}</p>
-            <p class="fs-1 text-white">Cantidad: {{product?.quantity}}</p>
-            <p class="fs-1 text-white">Precio: {{product?.price}}</p>
+            <p class="fs-1 text-white">Cantidad: {{product?.quantity | number}}</p>
+            <p class="fs-1 text-white">Precio: {{product?.price | currency}}</p>
             <p class="fs-1 text-white">Descripción:</p>
             <p class="fs-3 text-white">{{product?.description}}</p>
         </div>

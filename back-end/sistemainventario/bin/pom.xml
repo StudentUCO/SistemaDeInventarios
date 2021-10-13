@@ -8,8 +8,8 @@
 		<version>2.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>co.com.k4soft</groupId>
-	<artifactId>sistemanotas</artifactId>
+	<groupId>co.com.uco</groupId>
+	<artifactId>sistemainventario</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sistemanotas</name>
 	<description>SIstema para la adminitración</description>

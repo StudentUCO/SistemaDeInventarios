@@ -7,20 +7,20 @@ import co.com.uco.sistemainventario.comando.ComandoInventario;
 import co.com.uco.sistemainventario.converter.InventarioConverter;
 import co.com.uco.sistemainventario.respuesta.ComandoRespuesta;
 import co.com.uco.sistemainventario.respuesta.impl.ManejadorComandoRespuesta;
-import co.com.uco.sistemainventario.servicio.inventario.creacion.CreacionServicioInventario;
+import co.com.uco.sistemainventario.servicio.inventario.edicion.EdicionServicioInventario;
 
 @Component
-public class ManejadorCreacionInventario implements ManejadorComandoRespuesta<ComandoInventario, ComandoRespuesta<Integer>> {
-	
+public class ManejadorEdicionInventario implements ManejadorComandoRespuesta<ComandoInventario, ComandoRespuesta<Integer>> {
+
 	@Autowired
-	private CreacionServicioInventario creacionServicioInventario;
+	private EdicionServicioInventario edicionServicioInventario;
 	
 	@Autowired
 	private InventarioConverter inventarioConverter;
 
 	@Override
 	public ComandoRespuesta<Integer> ejecutar(ComandoInventario comandoInventario) {
-		return new ComandoRespuesta<>(creacionServicioInventario.ejecutar(inventarioConverter.crear(comandoInventario)));
+		return new ComandoRespuesta<>(edicionServicioInventario.ejecutar(inventarioConverter.editar(comandoInventario)));
 	}
 
 }

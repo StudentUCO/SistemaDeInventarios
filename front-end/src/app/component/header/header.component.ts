@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/service/login/login.service';
 import { ProductService } from 'src/app/service/product/product.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
   name = new FormControl('');
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(private loginService: LoginService,private productService: ProductService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -26,5 +27,9 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
+
+  isAthenticated(): boolean {
+    return this.loginService.isAuthenticated();
+ }
 
 }

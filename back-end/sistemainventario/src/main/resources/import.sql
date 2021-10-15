@@ -12,4 +12,4 @@ INSERT INTO usuario (id_usuario,nombre_usuario, password, enabled ) values (2,'a
 INSERT INTO roles (id_rol,nombre_rol) values (1,'ROLE_ADMIN')
 INSERT INTO roles (id_rol,nombre_rol) values (2,'ROLE_CONSULTA')
 INSERT INTO users_authorities (id_usuario, id_rol ) values (1,1)
-INSERT INTO users_authorities (id_usuario, id_rol ) values (2,2)
+INSERT INTO users_authorities (id_usuario, id_rol ) values (2,2)	

@@ -35,7 +35,8 @@ export class InventarioService {
     return this.inventarioList;
   }
 
-  create(comandoInventario: ComandoInventario): Observable<number> {
+  create(comandoInventario: Partial<ComandoInventario>): Observable<number> {
+    console.log(comandoInventario);
     return this.http.post<number>(URL, comandoInventario, {headers: this.serviceUtil.getJsonHeader()});
   }
 
@@ -56,6 +57,7 @@ export class InventarioService {
   }
 
   buildInventario(form: any, inventarioToUpdate: Inventario): Inventario {
+    console.log('form', form);
     const inventario: Inventario = {
       ...inventarioToUpdate,
       ...form
@@ -63,13 +65,34 @@ export class InventarioService {
     return inventario;
   }
 
-  buildComandoInventario(inventario: Inventario): ComandoInventario {
+  buildComandoInventarioToCreate(inventario: Inventario): Partial<ComandoInventario> {
+    const comandoInventario: Partial<ComandoInventario> = {
+      idProducto: inventario.producto.idProducto,
+      cantidad: inventario.cantidad
+    }
+    return comandoInventario;
+  }
+
+  buildComandoInventarioToUpdate(inventario: Inventario): ComandoInventario {
     const comandoInventario: ComandoInventario = {
       idInventario: inventario.idInventario,
       idProducto: inventario.producto.idProducto,
       cantidad: inventario.cantidad
     }
     return comandoInventario;
+  }
+
+  getDefaultInventario(): Inventario {
+    return {
+      idInventario: 0,
+      producto: {
+        idProducto: 0,
+        nombre: 'Default',
+        codigo: '#####',
+        activo: false,
+      },
+      cantidad: 0
+    };
   }
 
 }

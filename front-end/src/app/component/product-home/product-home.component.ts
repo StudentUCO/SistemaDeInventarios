@@ -24,22 +24,13 @@ export class ProductHomeComponent implements OnInit {
     if (this.inventarioService.inventario) {
       this.inventario = this.inventarioService.inventario;
     } else {
-      this.inventario = {
-        idInventario: 0,
-        producto: {
-          idProducto: 0,
-          nombre: 'Default',
-          codigo: '#####',
-          activo: false,
-        },
-        cantidad: 0
-      };
+      this.inventario = this.inventarioService.getDefaultInventario();
     }
   }
 
   addQuantity(): void {
     this.inventario.cantidad += this.quantity.value;
-    this.inventarioService.update(this.inventarioService.buildComandoInventario(this.inventario)).toPromise().then(idInventario => {
+    this.inventarioService.update(this.inventarioService.buildComandoInventarioToUpdate(this.inventario)).toPromise().then(idInventario => {
       if(this.inventario.idInventario === idInventario){
         //mostrarAlerta
         this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
@@ -51,7 +42,7 @@ export class ProductHomeComponent implements OnInit {
   decreaseQuantity(): void {
     if (this.inventario.cantidad >= this.quantity.value) {
       this.inventario.cantidad -= this.quantity.value;
-      this.inventarioService.update(this.inventarioService.buildComandoInventario(this.inventario)).toPromise().then(idInventario => {
+      this.inventarioService.update(this.inventarioService.buildComandoInventarioToUpdate(this.inventario)).toPromise().then(idInventario => {
         if(this.inventario.idInventario === idInventario){
           //mostrarAlerta
           this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);

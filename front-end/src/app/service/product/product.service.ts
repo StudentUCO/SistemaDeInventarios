@@ -64,4 +64,13 @@ export class ProductService {
     };
     return product;
   }
+
+  getDefaultProduct(): Producto {
+    return {
+      idProducto: 0,
+      nombre: 'Default',
+      codigo: '#####',
+      activo: false,
+    }
+  }
 }

@@ -19,8 +19,6 @@ export class HomeComponent implements OnInit {
     this.inventarioService.getAll().toPromise().then(list => {
       this.inventarioList = list;
       this.inventarioService.changeInventarioList(list);
-      console.log(list);
-      console.log(list.length);
     }).catch(error=>console.log(error));
     this.inventarioService.customInventarioList.subscribe(list => this.inventarioList = list);
   }

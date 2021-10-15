@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Inventario } from 'src/app/model/inventario';
 import { InventarioService } from 'src/app/service/inventario/inventario.service';
-import { ProductService } from 'src/app/service/product/product.service';
 import { UtilModal } from 'src/app/util/util-modal';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-home',
@@ -29,26 +29,38 @@ export class ProductHomeComponent implements OnInit {
   }
 
   addQuantity(): void {
-    this.inventario.cantidad += this.quantity.value;
-    this.inventarioService.update(this.inventarioService.buildComandoInventarioToUpdate(this.inventario)).toPromise().then(idInventario => {
-      if(this.inventario.idInventario === idInventario){
+    const inventarioToUpdate = this.inventarioService.buildComandoInventarioToUpdate(this.inventario);
+    inventarioToUpdate.cantidad += this.quantity.value;
+    this.inventarioService.update(inventarioToUpdate).toPromise().then(idInventario => {
+      if (this.inventario.idInventario === idInventario) {
         //mostrarAlerta
+        this.inventario.cantidad += this.quantity.value;
         this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
         console.log(idInventario);
+        Swal.fire('Cantidad del producto aumentada exitosamente');
       }
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      console.log(error);
+      Swal.fire('Ha ocurrido un problema por lo que no se pudo aumentar la cantidad del producto');
+    });
   }
 
   decreaseQuantity(): void {
     if (this.inventario.cantidad >= this.quantity.value) {
-      this.inventario.cantidad -= this.quantity.value;
-      this.inventarioService.update(this.inventarioService.buildComandoInventarioToUpdate(this.inventario)).toPromise().then(idInventario => {
-        if(this.inventario.idInventario === idInventario){
+      const inventarioToUpdate = this.inventarioService.buildComandoInventarioToUpdate(this.inventario);
+      inventarioToUpdate.cantidad -= this.quantity.value;
+      this.inventarioService.update(inventarioToUpdate).toPromise().then(idInventario => {
+        if (this.inventario.idInventario === idInventario) {
           //mostrarAlerta
+          this.inventario.cantidad -= this.quantity.value;
           this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
           console.log(idInventario);
+          Swal.fire('Cantidad del producto disminuida exitosamente');
         }
-      }).catch(error => console.log(error));
+      }).catch(error => {
+        console.log(error);
+        Swal.fire('Ha ocurrido un problema por lo que no se pudo disminuir la cantidad del producto');
+      });
       this.isDecrease = false;
     } else {
       this.isDecrease = true;
@@ -56,15 +68,22 @@ export class ProductHomeComponent implements OnInit {
   }
 
   delete(): void {
-    this.inventarioService.delete(this.inventario.idInventario).toPromise().then(idInventario=>{
+    this.inventarioService.delete(this.inventario.idInventario).toPromise().then(idInventario => {
       this.inventarioService.removeInventario(this.inventario);
-      console.log(idInventario)
-    }).catch(error=>console.log(error));
+    }).catch(error => {
+      console.log(error);
+      Swal.fire('Ha ocurrido un problema por lo que no se pudo eliminar el producto del inventario');
+    });
     this.router.navigate(['/home']);
   }
 
   showModal(show: boolean, id: string): void {
     UtilModal.show(show, id);
+  }
+
+  getInventario(inventario: Inventario): void {
+    this.inventario = inventario;
+    console.log('getInventario',inventario);
   }
 
   setIsNew(isNew: boolean): void {

@@ -5,6 +5,7 @@ import { Producto } from 'src/app/model/producto';
 import { InventarioService } from 'src/app/service/inventario/inventario.service';
 import { ProductService } from 'src/app/service/product/product.service';
 import { UtilModal } from 'src/app/util/util-modal';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-form',
@@ -13,7 +14,6 @@ import { UtilModal } from 'src/app/util/util-modal';
 })
 export class ProductFormComponent implements OnInit {
 
-  isNew!: boolean;
   @Input() set setIsNew(isNew: boolean) {
     this.isNew = isNew;
   }
@@ -25,6 +25,8 @@ export class ProductFormComponent implements OnInit {
     this.form?.patchValue(product);
   };
   product?: Product; */
+  isNew!: boolean;
+  product!: Producto;
   productList!: Producto[];
   form!: FormGroup;
 
@@ -33,7 +35,13 @@ export class ProductFormComponent implements OnInit {
   ngOnInit(): void {
     this.productService.getProductList().toPromise().then(list => this.productList = list).catch(error => console.log(error));
     this.buildForm();
-    this.inventario ? this.form.patchValue(this.inventario) : this.inventario = this.inventarioService.getDefaultInventario();
+    if (this.inventario) {
+      this.product = this.inventario.producto;
+      this.form.patchValue(this.inventario);
+    } else {
+      this.inventario = this.inventarioService.getDefaultInventario();
+      this.product = this.productService.getDefaultProduct();
+    }
   }
 
   buildForm(): void {
@@ -60,26 +68,32 @@ export class ProductFormComponent implements OnInit {
   }
 
   create(): void {
-    console.log('create');
-    this.inventario = this.inventarioService.buildInventario(this.form.value, this.inventario);
-    console.log(this.inventario);
-    this.inventarioService.create(this.inventarioService.buildComandoInventarioToCreate(this.inventario)).toPromise().then(idInventario => {
+    const inventarioToCreate = this.inventarioService.buildInventario(this.form.value, this.inventario);
+    this.inventarioService.create(this.inventarioService.buildComandoInventarioToCreate(inventarioToCreate)).toPromise().then(idInventario => {
+      this.inventario = inventarioToCreate;
       this.inventario.idInventario = idInventario
       this.inventarioService.addInventario(this.inventario);
       this.inventarioChange.emit(this.inventario);
-    }).catch(error => console.log(error));
+      Swal.fire('Producto adicionado al inventario correctamente');
+    }).catch(error => {
+      console.log(error);
+      Swal.fire('Ha ocurrido un problema, por lo que no se pudo adicionar un producto al inventario');
+    });
   }
 
   update(): void {
-    console.log('update');
-    console.log(this.inventario);
-    this.inventario = this.inventarioService.buildInventario(this.form.value, this.inventario);
-    console.log(this.inventario);
-    this.inventarioService.update(this.inventarioService.buildComandoInventarioToUpdate(this.inventario)).toPromise().then(idInventario => {
+    const inventarioToUpdate = this.inventarioService.buildInventario(this.form.value, this.inventario);
+    this.inventarioService.update(this.inventarioService.buildComandoInventarioToUpdate(inventarioToUpdate)).toPromise().then(idInventario => {
       if (this.inventario.idInventario === idInventario) {
+        this.inventario = inventarioToUpdate;
         this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
+        this.inventarioChange.emit(this.inventario);
+        Swal.fire('Producto ha sido cambiado del inventario correctamente');
       }
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      console.log(error);
+      Swal.fire('Ha ocurrido un problema, por lo que no se pudo editar el producto del inventario');
+    });
   }
 
   showModal(show: boolean, id: string): void {
@@ -91,9 +105,8 @@ export class ProductFormComponent implements OnInit {
   }
 
   setProduct(product: Producto): void {
-    this.inventario.producto = product;
+    this.product = product;
     this.form.get('producto')?.setValue(product);
-    console.log('producto', product);
     this.changeModal('product-list', 'product-form');
   }
 

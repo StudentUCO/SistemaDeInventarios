@@ -43,5 +43,5 @@
     </div>
 
     <!-- Modales -->
-    <app-product-form [setIsNew]="isNew" [(inventario)]="inventario"></app-product-form>
+    <app-product-form [setIsNew]="isNew" [inventario]="inventario" (inventarioChange)="getInventario($event)"></app-product-form>
 </div>

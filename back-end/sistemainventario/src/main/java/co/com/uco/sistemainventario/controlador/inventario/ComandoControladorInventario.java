@@ -1,6 +1,7 @@
 package co.com.uco.sistemainventario.controlador.inventario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,16 +29,19 @@ public class ComandoControladorInventario {
 	@Autowired
 	private ManejadorBorradoInventario manejadorBorradoInventario;
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping
 	public ComandoRespuesta<Integer> crear(@RequestBody ComandoInventario comandoInventario){
 		return manejadorCreacionInventario.ejecutar(comandoInventario);
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping
 	public ComandoRespuesta<Integer> editar(@RequestBody ComandoInventario comandoInventario){
 		return manejadorEdicionInventario.ejecutar(comandoInventario);
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/{idInventario}")
 	public ComandoRespuesta<Integer> borrar(@PathVariable Integer idInventario){
 		return manejadorBorradoInventario.ejecutar(idInventario);

@@ -57,7 +57,6 @@ export class InventarioService {
   }
 
   buildInventario(form: any, inventarioToUpdate: Inventario): Inventario {
-    console.log('form', form);
     const inventario: Inventario = {
       ...inventarioToUpdate,
       ...form

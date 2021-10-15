@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Product } from 'src/app/model/product.model';
+import { Inventario } from 'src/app/model/inventario';
+import { InventarioService } from 'src/app/service/inventario/inventario.service';
 import { ProductService } from 'src/app/service/product/product.service';
 import { UtilModal } from 'src/app/util/util-modal';
 
@@ -12,38 +13,51 @@ import { UtilModal } from 'src/app/util/util-modal';
 })
 export class ProductHomeComponent implements OnInit {
 
-  @Input() product!: Product;
+  @Input() inventario!: Inventario;
   isNew!: boolean;
   isDecrease = false;
   quantity = new FormControl(0);
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(private inventarioService: InventarioService, private router: Router) { }
 
   ngOnInit(): void {
-    if (this.productService.product) {
-      this.product = this.productService.product;
+    if (this.inventarioService.inventario) {
+      this.inventario = this.inventarioService.inventario;
     } else {
-      this.product = {
-        id: 0,
-        name: 'Default',
-        quantity: 0,
-        price: 0,
-        description: 'Default'
+      this.inventario = {
+        idInventario: 0,
+        producto: {
+          idProducto: 0,
+          nombre: 'Default',
+          codigo: '#####',
+          activo: false,
+        },
+        cantidad: 0
       };
     }
   }
 
   addQuantity(): void {
-    this.product.quantity += this.quantity.value;
-    this.productService.changeProduct(this.productService.product, this.product);
-    this.productService.update(this.product).then(product => this.product=product).catch(error => console.log(error));
+    this.inventario.cantidad += this.quantity.value;
+    this.inventarioService.update(this.inventarioService.buildComandoInventario(this.inventario)).toPromise().then(idInventario => {
+      if(this.inventario.idInventario === idInventario){
+        //mostrarAlerta
+        this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
+        console.log(idInventario);
+      }
+    }).catch(error => console.log(error));
   }
 
   decreaseQuantity(): void {
-    if (this.product.quantity >= this.quantity.value) {
-      this.product.quantity -= this.quantity.value;
-      this.productService.changeProduct(this.productService.product, this.product);
-      this.productService.update(this.product).then(product => this.product=product).catch(error => console.log(error));
+    if (this.inventario.cantidad >= this.quantity.value) {
+      this.inventario.cantidad -= this.quantity.value;
+      this.inventarioService.update(this.inventarioService.buildComandoInventario(this.inventario)).toPromise().then(idInventario => {
+        if(this.inventario.idInventario === idInventario){
+          //mostrarAlerta
+          this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
+          console.log(idInventario);
+        }
+      }).catch(error => console.log(error));
       this.isDecrease = false;
     } else {
       this.isDecrease = true;
@@ -51,8 +65,10 @@ export class ProductHomeComponent implements OnInit {
   }
 
   delete(): void {
-    this.productService.removeProduct(this.product);
-    this.productService.delete(this.product).then(product=>console.log(product)).catch(error=>console.log(error));
+    this.inventarioService.delete(this.inventario.idInventario).toPromise().then(idInventario=>{
+      this.inventarioService.removeInventario(this.inventario);
+      console.log(idInventario)
+    }).catch(error=>console.log(error));
     this.router.navigate(['/home']);
   }
 

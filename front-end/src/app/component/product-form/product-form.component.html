@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="product-form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -13,35 +12,60 @@
                         <div class="row">
                             <div class="col">
                                 <label for="name-form">Producto:</label>
-                                <input id="name-form" type="text" class="form-control" formControlName="name">
+                                <input id="name-form" type="text" class="form-control"
+                                    [value]="inventario.producto.nombre" (click)="changeModal('product-form', 'product-list')">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="quantity-form">Cantidad:</label>
-                                <input id="quantity-form" type="number" class="form-control" formControlName="quantity" *ngIf="isNew, else quantity">
+                                <input id="quantity-form" type="number" class="form-control" formControlName="cantidad"
+                                    *ngIf="isNew, else quantity">
                                 <ng-template #quantity>
-                                    <input id="quantity-form" type="number" class="form-control" formControlName="quantity" readonly>
+                                    <input id="quantity-form" type="number" class="form-control"
+                                        formControlName="cantidad" readonly>
                                 </ng-template>
                             </div>
-                            <div class="col">
+                            <!-- <div class="col">
                                 <label for="price-form">Precio:</label>
                                 <input id="price-form" type="text" class="form-control" formControlName="price" prefix="$" mask="separator.2" thousandSeparator=",">
-                            </div>
+                            </div> -->
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col">
                                 <label for="description-form">Descripción:</label>
                                 <textarea class="form-control" id="description-form" cols="30" rows="10"
                                     formControlName="description"></textarea>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" (click)="showModal(false, 'product-form')">Cancelar</button>
+                <button type="button" class="btn btn-danger"
+                    (click)="showModal(false, 'product-form')">Cancelar</button>
                 <button type="button" class="btn btn-success" (click)="save()">{{isNew? 'Crear' : 'Editar'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="product-list" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Seleccione un producto</h5>
+                <button type="button" class="btn-close" aria-label="Close" (click)="changeModal('product-list', 'product-form')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <button *ngFor="let product of productList" type="button"
+                        class="list-group-item list-group-item-action" (click)="setProduct(product)">
+                        ({{product.activo? 'activo' : 'inactivo'}}) {{product.codigo}}. {{product.nombre}}
+                        <!-- {{'(' + product.activo? 'activo' : 'inactivo' + ') ' + product.codigo + '. ' + product.nombre}} -->
+                    </button>
+                </div>
             </div>
         </div>
     </div>

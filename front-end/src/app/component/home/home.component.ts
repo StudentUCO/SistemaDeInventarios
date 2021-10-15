@@ -1,5 +1,7 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Product } from 'src/app/model/product.model';
+import { Inventario } from 'src/app/model/inventario';
+import { Producto } from 'src/app/model/producto';
+import { InventarioService } from 'src/app/service/inventario/inventario.service';
 import { ProductService } from 'src/app/service/product/product.service';
 
 @Component({
@@ -9,22 +11,22 @@ import { ProductService } from 'src/app/service/product/product.service';
 })
 export class HomeComponent implements OnInit {
 
-  productList!: Product[];
+  inventarioList!: Inventario[];
 
-  constructor(private productService: ProductService) { }
+  constructor(private inventarioService: InventarioService) { }
 
   ngOnInit(): void {
-    this.productService.getProductList().then(list => {
-      this.productList = list;
-      this.productService.changeProductList(list);
+    this.inventarioService.getAll().toPromise().then(list => {
+      this.inventarioList = list;
+      this.inventarioService.changeInventarioList(list);
       console.log(list);
       console.log(list.length);
     }).catch(error=>console.log(error));
-    this.productService.customProductList.subscribe(list => this.productList = list);
+    this.inventarioService.customInventarioList.subscribe(list => this.inventarioList = list);
   }
 
-  setProduct(product: Product) {
-    this.productService.product = product;
+  setInventario(inventario: Inventario) {
+    this.inventarioService.inventario = inventario;
   }
 
 }

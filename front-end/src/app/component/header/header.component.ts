@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { InventarioService } from 'src/app/service/inventario/inventario.service';
 import { LoginService } from 'src/app/service/login/login.service';
-import { ProductService } from 'src/app/service/product/product.service';
 
 @Component({
   selector: 'app-header',
@@ -13,19 +13,19 @@ export class HeaderComponent implements OnInit {
 
   name = new FormControl('');
 
-  constructor(private loginService: LoginService,private productService: ProductService, private router: Router) { }
+  constructor(private loginService: LoginService,private inventarioService: InventarioService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   search(): void {
-    if (this.name.value !== '') {
-      this.productService.getProductBy(this.name.value).then((list)=>{
-        this.productService.changeProductList(list);
+    /* if (this.name.value !== '') {
+      this.inventarioService.getInventarioBy(this.name.value).then((list)=>{
+        this.inventarioService.changeProductList(list);
         this.router.navigate(['/home']);
         console.log(list);
       });
-    }
+    } */
   }
 
   isAthenticated(): boolean {

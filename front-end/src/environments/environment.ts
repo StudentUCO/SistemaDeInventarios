@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'https://private-be634e-jecq123.apiary-mock.com/questions',
-  urlProducts: 'https://private-60944-inventario2.apiary-mock.com/products',
+  url: 'http://localhost:8083/v1/',
   firebaseConfig: {
     apiKey: "AIzaSyDHyFIFbumiOifRKZ11bFopX6IYA1j4zWI",
     authDomain: "sistemadeinventario-bfe9f.firebaseapp.com",

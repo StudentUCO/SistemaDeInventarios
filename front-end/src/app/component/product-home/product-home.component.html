@@ -4,11 +4,11 @@
             <img src="../../../assets/images/arduino-uno.webp" class="img-fluid" alt="Imagén de un Arduino Uno">
         </div>
         <div class="col">
-            <p class="fs-1 text-white">{{product?.name}}</p>
-            <p class="fs-1 text-white">Cantidad: {{product?.quantity | number}}</p>
-            <p class="fs-1 text-white">Precio: {{product?.price | currency}}</p>
-            <p class="fs-1 text-white">Descripción:</p>
-            <p class="fs-3 text-white">{{product?.description}}</p>
+            <p class="fs-1 text-white">{{inventario.producto?.nombre}}</p>
+            <p class="fs-1 text-white">Cantidad: {{inventario.cantidad | number}}</p>
+            <!-- <p class="fs-1 text-white">Precio: {{product?.price | currency}}</p> -->
+            <!-- <p class="fs-1 text-white">Descripción:</p> -->
+            <!-- <p class="fs-3 text-white">{{product?.description}}</p> -->
         </div>
     </div>
     <div class="row mb-3">
@@ -26,10 +26,10 @@
                     <button type="button" class="btn btn-primary" (click)="addQuantity()">Entrada</button>
                 </div>
             </div>
-            <div class="row" *ngIf="quantity?.value > product.quantity && isDecrease">
+            <div class="row" *ngIf="quantity?.value > inventario.cantidad && isDecrease">
                 <div class="alert alert-warning" role="alert">
                     ⚠¡Advertencia!⚠ No hay disponibilidad suficiente del producto. Usted quiere retirar
-                    {{quantity?.value}} y solo hay disponibilidad de {{product?.quantity}}
+                    {{quantity?.value}} y solo hay disponibilidad de {{inventario?.cantidad}}
                 </div>
             </div>
         </div>
@@ -43,5 +43,5 @@
     </div>
 
     <!-- Modales -->
-    <app-product-form [setIsNew]="isNew" [(product)]="product"></app-product-form>
+    <app-product-form [setIsNew]="isNew" [(inventario)]="inventario"></app-product-form>
 </div>

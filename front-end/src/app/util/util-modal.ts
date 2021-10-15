@@ -14,4 +14,9 @@ export class UtilModal {
             this.modal?.hide();
         }
     }
+
+    static change(idCurrent: string, idToChange: string): void {
+        this.show(false, idCurrent);
+        this.show(true, idToChange);
+    }
 }

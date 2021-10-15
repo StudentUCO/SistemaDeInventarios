@@ -1,83 +1,66 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { Product } from 'src/app/model/product.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Producto } from 'src/app/model/producto';
+import { ServiceUtil } from 'src/app/util/service-util';
 import { environment } from 'src/environments/environment';
+
+const URL = environment.url + 'producto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  product!: Product;
+  product!: Producto;
 
-  private productList = new BehaviorSubject<Product[]>([]);
+  private productList = new BehaviorSubject<Producto[]>([]);
   customProductList = this.productList.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private serviceUtil: ServiceUtil) { }
 
-  changeProductList(productList: Product[]): void {
+  changeProductList(productList: Producto[]): void {
     this.productList.next(productList);
   }
 
-  getProducts(): Product[] {
-    const list = [];
-    for (let i = 1; i <= 10; i++) {
-      list.push({
-        id: i,
-        name: 'Arduino Uno ' + i,
-        quantity: i * 123,
-        price: i * 9876,
-        description: 'Default ' + i
-      });
-    }
-    return list;
-  }
-
-  getProductList(): Promise<Product[]> {
+  getProductList(): Observable<Producto[]> {
     if (!this.productList || this.productList.value.length === 0) {
-      return this.http.get<Product[]>(environment.url).toPromise();
+      return this.http.get<Producto[]>(URL, {headers: this.serviceUtil.getSimpleHeader()});
     }
-    return this.productList.toPromise();
+    return this.productList;
   }
 
-  getProductBy(name: string): Promise<Product[]> {
-    console.log(name);
-    return this.http.get<Product[]>(environment.urlProducts).toPromise();
+  create(product: Producto): Observable<number> {
+    return this.http.post<number>(URL, product, {headers: this.serviceUtil.getJsonHeader()});
   }
 
-  create(product: Product): Promise<Product> {
-    return this.http.post<Product>(environment.url, product).toPromise();;
+  update(product: Producto): Observable<number> {
+    return this.http.put<number>(URL + `/${product.idProducto}`, product, {headers: this.serviceUtil.getJsonHeader()});
   }
 
-  update(product: Product): Promise<Product> {
-    return this.http.put<Product>(environment.url, product).toPromise();
+  delete(idProducto: number): Observable<number> {
+    return this.http.delete<number>(URL + `/${idProducto}`, {headers: this.serviceUtil.getSimpleHeader()});
   }
 
-  delete(product: Product): Promise<Product> {
-    return this.http.delete<Product>(environment.url + '/' + product.id).toPromise();
-  }
-
-  addProduct(product: Product): void {
+  addProduct(product: Producto): void {
     this.productList.value.push(product);
     console.log(this.productList.value);
   }
 
-  changeProduct(oldProduct: Product, newProduct: Product): void {
+  changeProduct(oldProduct: Producto, newProduct: Producto): void {
     this.productList.value[this.productList.value.indexOf(oldProduct)] = newProduct;
   }
 
-  removeProduct(product: Product): void {
+  removeProduct(product: Producto): void {
     this.productList.value.splice(this.productList.value.indexOf(product));
   }
 
-  buildProduct(form: FormGroup, productToUpdate?: Product): Product {
-    console.log(form.value);
+  buildProduct(form: any, productToUpdate?: Producto): Producto {
+    console.log(form);
     console.log(this.productList.value.length);
-    let product: Product = {
-      id: productToUpdate?.id? productToUpdate.id : this.productList.value.length,
-      ...form.value
+    let product: Producto = {
+      idProducto: productToUpdate?.idProducto? productToUpdate.idProducto : this.productList.value.length,
+      ...form
     };
     return product;
   }

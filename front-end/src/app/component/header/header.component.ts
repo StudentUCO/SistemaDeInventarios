@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InventarioService } from 'src/app/service/inventario/inventario.service';
 import { LoginService } from 'src/app/service/login/login.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +28,12 @@ export class HeaderComponent implements OnInit {
       });
     } */
   }
+
+  logout(): void{
+    this.loginService.logout();
+    Swal.fire('Has cerrado la sesión exitosamente');
+    this.router.navigate(['/login']);
+ }
 
   isAthenticated(): boolean {
     return this.loginService.isAuthenticated();

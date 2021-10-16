@@ -69,12 +69,16 @@ export class ProductHomeComponent implements OnInit {
 
   delete(): void {
     this.inventarioService.delete(this.inventario.idInventario).toPromise().then(idInventario => {
-      this.inventarioService.removeInventario(this.inventario);
+      console.log(this.inventario.idInventario, idInventario, this.inventario.idInventario === idInventario.valor);
+      if (this.inventario.idInventario === idInventario.valor) {
+        this.inventarioService.removeInventario(this.inventario);
+        Swal.fire('Producto ha sido eliminado del inventario correctamente');
+        this.router.navigate(['/home']);
+      }
     }).catch(error => {
       console.log(error);
       Swal.fire('Ha ocurrido un problema por lo que no se pudo eliminar el producto del inventario');
     });
-    this.router.navigate(['/home']);
   }
 
   showModal(show: boolean, id: string): void {

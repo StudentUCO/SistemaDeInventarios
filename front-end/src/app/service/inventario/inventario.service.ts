@@ -44,8 +44,8 @@ export class InventarioService {
     return this.http.put<number>(URL, comandoInventario, {headers: this.serviceUtil.getJsonHeader()});
   }
 
-  delete(idInventario: number): Observable<number> {
-    return this.http.delete<number>(URL + `/${idInventario}`, {headers: this.serviceUtil.getSimpleHeader()});
+  delete(idInventario: number): Observable<{valor: number}> {
+    return this.http.delete<{valor: number}>(URL + `/${idInventario}`, {headers: this.serviceUtil.getSimpleHeader()});
   }
 
   addInventario(inventario: Inventario): void {

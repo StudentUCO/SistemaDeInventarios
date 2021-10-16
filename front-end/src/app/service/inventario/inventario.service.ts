@@ -53,7 +53,7 @@ export class InventarioService {
   }
 
   removeInventario(inventario: Inventario): void {
-    this.inventarioList.value.splice(this.inventarioList.value.indexOf(inventario));
+    this.inventarioList.value.splice(this.inventarioList.value.indexOf(inventario), 1);
   }
 
   buildInventario(form: any, inventarioToUpdate: Inventario): Inventario {

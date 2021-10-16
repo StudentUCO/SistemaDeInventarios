@@ -32,11 +32,10 @@ export class ProductHomeComponent implements OnInit {
     const inventarioToUpdate = this.inventarioService.buildComandoInventarioToUpdate(this.inventario);
     inventarioToUpdate.cantidad += this.quantity.value;
     this.inventarioService.update(inventarioToUpdate).toPromise().then(idInventario => {
-      if (this.inventario.idInventario === idInventario) {
-        //mostrarAlerta
+      console.log(idInventario);
+      if (this.inventario.idInventario === idInventario.valor) {
         this.inventario.cantidad += this.quantity.value;
         this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
-        console.log(idInventario);
         Swal.fire('Cantidad del producto aumentada exitosamente');
       }
     }).catch(error => {
@@ -50,8 +49,7 @@ export class ProductHomeComponent implements OnInit {
       const inventarioToUpdate = this.inventarioService.buildComandoInventarioToUpdate(this.inventario);
       inventarioToUpdate.cantidad -= this.quantity.value;
       this.inventarioService.update(inventarioToUpdate).toPromise().then(idInventario => {
-        if (this.inventario.idInventario === idInventario) {
-          //mostrarAlerta
+        if (this.inventario.idInventario === idInventario.valor) {
           this.inventario.cantidad -= this.quantity.value;
           this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
           console.log(idInventario);

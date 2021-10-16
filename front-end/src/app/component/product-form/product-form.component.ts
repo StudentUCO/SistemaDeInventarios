@@ -71,7 +71,7 @@ export class ProductFormComponent implements OnInit {
     const inventarioToCreate = this.inventarioService.buildInventario(this.form.value, this.inventario);
     this.inventarioService.create(this.inventarioService.buildComandoInventarioToCreate(inventarioToCreate)).toPromise().then(idInventario => {
       this.inventario = inventarioToCreate;
-      this.inventario.idInventario = idInventario
+      this.inventario.idInventario = idInventario.valor
       this.inventarioService.addInventario(this.inventario);
       this.inventarioChange.emit(this.inventario);
       Swal.fire('Producto adicionado al inventario correctamente');
@@ -84,7 +84,7 @@ export class ProductFormComponent implements OnInit {
   update(): void {
     const inventarioToUpdate = this.inventarioService.buildInventario(this.form.value, this.inventario);
     this.inventarioService.update(this.inventarioService.buildComandoInventarioToUpdate(inventarioToUpdate)).toPromise().then(idInventario => {
-      if (this.inventario.idInventario === idInventario) {
+      if (this.inventario.idInventario === idInventario.valor) {
         this.inventario = inventarioToUpdate;
         this.inventarioService.changeInventario(this.inventarioService.inventario, this.inventario);
         this.inventarioChange.emit(this.inventario);

@@ -35,13 +35,13 @@ export class InventarioService {
     return this.inventarioList;
   }
 
-  create(comandoInventario: Partial<ComandoInventario>): Observable<number> {
+  create(comandoInventario: Partial<ComandoInventario>): Observable<{valor: number}> {
     console.log(comandoInventario);
-    return this.http.post<number>(URL, comandoInventario, {headers: this.serviceUtil.getJsonHeader()});
+    return this.http.post<{valor: number}>(URL, comandoInventario, {headers: this.serviceUtil.getJsonHeader()});
   }
 
-  update(comandoInventario: ComandoInventario): Observable<number> {
-    return this.http.put<number>(URL, comandoInventario, {headers: this.serviceUtil.getJsonHeader()});
+  update(comandoInventario: ComandoInventario): Observable<{valor: number}> {
+    return this.http.put<{valor: number}>(URL, comandoInventario, {headers: this.serviceUtil.getJsonHeader()});
   }
 
   delete(idInventario: number): Observable<{valor: number}> {

@@ -37,7 +37,7 @@ export class InventarioService {
      /* return this.http.get<Inventario[]>(URL, {headers: this.serviceUtil.getSimpleHeader()});  */
   }
 
-  changProductInInventarioList(producto:Producto){
+  changeProductInInventarioList(producto:Producto){
     this.inventarioList.subscribe(list => {
       list.forEach(inventario =>{ 
         if(inventario.producto.idProducto===producto.idProducto){

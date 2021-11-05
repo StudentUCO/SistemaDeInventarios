@@ -30,16 +30,19 @@ export class ProductService {
     return this.productList;
   }
 
-  create(product: Producto): Observable<number> {
-    return this.http.post<number>(URL, product, {headers: this.serviceUtil.getJsonHeader()});
+  create(product: Producto): Observable<{valor: number}> {
+    console.log('create', this.serviceUtil.getJsonHeader());
+    return this.http.post<{valor: number}>(URL, product, {headers: this.serviceUtil.getJsonHeader()});
   }
 
-  update(product: Producto): Observable<number> {
-    return this.http.put<number>(URL + `/${product.idProducto}`, product, {headers: this.serviceUtil.getJsonHeader()});
+  update(product: Producto): Observable<{valor: number}> {
+    console.log('update',this.serviceUtil.getJsonHeader());
+    return this.http.put<{valor: number}>(URL + `/${product.idProducto}`, product, {headers: this.serviceUtil.getJsonHeader()});
   }
 
-  delete(idProducto: number): Observable<number> {
-    return this.http.delete<number>(URL + `/${idProducto}`, {headers: this.serviceUtil.getSimpleHeader()});
+  delete(idProducto: number): Observable<{valor: number}> {
+    console.log('delete', this.serviceUtil.getSimpleHeader());
+    return this.http.delete<{valor: number}>(URL + `/${idProducto}`, { headers: this.serviceUtil.getSimpleHeader() });
   }
 
   addProduct(product: Producto): void {
@@ -59,8 +62,9 @@ export class ProductService {
     console.log(form);
     console.log(this.productList.value.length);
     let product: Producto = {
-      idProducto: productToUpdate?.idProducto? productToUpdate.idProducto : this.productList.value.length,
-      ...form
+      ...productToUpdate,
+      ...form,
+      idProducto: productToUpdate?.idProducto? productToUpdate.idProducto : ''
     };
     return product;
   }

@@ -16,6 +16,7 @@ export class ServiceUtil {
     }
 
    public getSimpleHeader(): any{
+       console.log(sessionStorage.getItem('token'));
         return  {
             "Authorization": 'Bearer '.concat(sessionStorage.getItem('token')|| '{}')
         }

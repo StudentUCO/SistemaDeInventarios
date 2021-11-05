@@ -23,54 +23,54 @@ export class ProductoComponent implements OnInit {
     this.getListProducts();
     this.buildForm();
   }
-  getListProducts(){
-    this.productService.getProductList().toPromise().then(list =>{ 
+  getListProducts() {
+    this.productService.getProductList().toPromise().then(list => {
       this.productList = list;
       this.productService.changeProductList(list);
-      
+
     }).catch(error => console.log(error));
-    this.productService.customProductList.subscribe(list => this.productList=list);
+    this.productService.customProductList.subscribe(list => this.productList = list);
   }
-  onCrear(){
+  onCrear() {
     this.guardar();
   }
   buildForm(): void {
     this.form = this.formBuilder.group({
-        idProducto:0,
-        nombre: 'default',
-        codigo: '#####',
-        activo: true
-     
+      idProducto: 0,
+      nombre: 'default',
+      codigo: '#####',
+      activo: true
+
     });
   }
   buildFormEdicion(): void {
     this.form = this.formBuilder.group({
-        idProducto:this.productoEdicion.idProducto,
-        nombre: this.productoEdicion.nombre,
-        codigo: this.productoEdicion.codigo,
-        activo: this.productoEdicion.activo
-     
+      idProducto: this.productoEdicion.idProducto,
+      nombre: this.productoEdicion.nombre,
+      codigo: this.productoEdicion.codigo,
+      activo: this.productoEdicion.activo
+
     });
   }
 
-  
 
-  delete(product:Producto): void {
+
+  delete(product: Producto): void {
     this.productService.delete(product.idProducto).toPromise().then(idProducto => {
-      Swal.fire('Producto ha sido eliminado del inventario correctamente');
+      console.log(idProducto);
       this.productService.removeProduct(product);
+      Swal.fire('Producto ha sido eliminado del inventario correctamente');
     }).catch(error => {
       console.log(error);
       Swal.fire('Ha ocurrido un problema por lo que no se pudo eliminar el producto del inventario');
     });
   }
 
-  guardar(){
-    
+  guardar() {
     const productToCreate = this.productService.buildProduct(this.form.value, this.product);
-    console.log(this.product)
     this.productService.create(productToCreate).toPromise().then(idProducto => {
-      productToCreate.idProducto=idProducto;
+      console.log('id', idProducto);
+      productToCreate.idProducto = idProducto.valor;
       this.productService.addProduct(productToCreate);
       Swal.fire('Producto adicionado correctamente');
     }).catch(error => {
@@ -80,26 +80,24 @@ export class ProductoComponent implements OnInit {
   }
 
   update(): void {
-    const inventarioToUpdate = this.productService.buildProduct(this.form.value, this.productoEdicion);
-    inventarioToUpdate.idProducto=this.productoEdicion.idProducto;
-    this.productService.update(inventarioToUpdate).toPromise().then(idInventario => {
-       this.inventarioService.changProductInInventarioList(inventarioToUpdate)
+    const productoToUpdate = this.productService.buildProduct(this.form.value, this.productoEdicion);
+    this.productService.update(productoToUpdate).toPromise().then(idProducto => {
+      console.log('id', idProducto);
+      this.inventarioService.changeProductInInventarioList(productoToUpdate)
+      this.productService.changeProduct(this.productoEdicion, productoToUpdate);
       Swal.fire('Producto ha sido cambiado correctamente');
-      this.productService.changeProduct(this.productoEdicion,inventarioToUpdate);
-        this.getListProducts();
     }).catch(error => {
       console.log(error);
       Swal.fire('Ha ocurrido un problema, por lo que no se pudo editar el producto');
     });
   }
 
-  anadirEdicionProducto(producto: Producto){
-    this.productoEdicion=producto;
-    this.buildFormEdicion()
-  
+  anadirEdicionProducto(producto: Producto) {
+    this.productoEdicion = producto;
+    this.buildFormEdicion();
   }
-  
-  onEditar(){
+
+  onEditar() {
     this.update();
   }
 

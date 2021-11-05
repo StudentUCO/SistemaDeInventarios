@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
   name = new FormControl('');
 
-  constructor(private loginService: LoginService,private inventarioService: InventarioService, private router: Router) { }
+  constructor(private loginService: LoginService, private inventarioService: InventarioService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -29,14 +29,10 @@ export class HeaderComponent implements OnInit {
     } */
   }
 
-  logout(): void{
+  logout(): void {
     this.loginService.logout();
     Swal.fire('Has cerrado la sesión exitosamente');
     this.router.navigate(['/login']);
- }
-
-  isAthenticated(): boolean {
-    return this.loginService.isAuthenticated();
- }
+  }
 
 }

@@ -3,9 +3,7 @@ import { Usuario } from '../../model/usuario';
 import { Observable } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 
-
 const utlEnPoint = 'http://localhost:8083/oauth/token';
-
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +51,7 @@ export class LoginService {
   }
 
   logout(): void{
-    this.token! = '';
+    this.token = '';
     this.usuario = new Usuario();
     sessionStorage.clear();
     sessionStorage.removeItem('token');

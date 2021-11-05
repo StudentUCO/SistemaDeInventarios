@@ -1,0 +1,84 @@
+<div class="container">
+    <button class="btn btn-dark btn-outline-success mt-5 mb-5 me-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Nuevo producto</button>
+    <div class="row">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Activo</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let producto of productList">
+                <tr>
+                    <td>{{producto.nombre}}</td>
+                    <td>{{producto.codigo}}</td>
+                    <td>{{producto.activo}}</td>
+                    <button type="button" class="btn btn-dark btn-outline-success" data-bs-toggle="modal" data-bs-target="#edicion" (click)=anadirEdicionProducto(producto)>editar</button>
+                    <button type="button" class="btn btn-dark btn-outline-success" (click)=delete(producto)>eliminar</button>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nuevo producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" [formGroup]="form">
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Nombre</label>
+                        <input class="form-control" id="nombre" formControlName="nombre">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Codigo</label>
+                        <input class="form-control" id="inputPassword4" formControlName="codigo">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success mt-3" data-bs-dismiss="modal" (click)="onCrear()">añadir producto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edicion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" [formGroup]="form">
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Nombre</label>
+                        <input class="form-control" id="nombre" formControlName="nombre">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label for="inputPassword4" class="form-label">Codigo</label>
+                        <input class="form-control" id="inputPassword4" formControlName="codigo">
+                    </div>
+                    <label for="inputPassword4" class="form-label">Estado del producto</label>
+                    <div class="form-check form-check-inline mt-3 ms-2">
+                        <input class="form-check-input" type="radio" name="activo" formControlName="activo" id="inlineRadio1" [value]=true>
+                        <label class="form-check-label" for="inlineRadio1">Activo</label>
+                    </div>
+                    <div class="form-check form-check-inline ms-2">
+                        <input class="form-check-input" type="radio" name="activo" formControlName="activo" id="inlineRadio2" [value]=false>
+                        <label class="form-check-label" for="inlineRadio2">Inactivo</label>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success mt-3" data-bs-dismiss="modal" (click)="onEditar()">editar producto</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

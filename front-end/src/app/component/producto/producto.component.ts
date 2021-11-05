@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Producto } from 'src/app/model/producto';
 import { ProductService } from 'src/app/service/product/product.service';
 import Swal from 'sweetalert2';
+import { InventarioService } from '../../service/inventario/inventario.service';
 
 @Component({
   selector: 'app-producto',
@@ -16,14 +17,19 @@ export class ProductoComponent implements OnInit {
   product!: Producto;
   productoEdicion!: Producto;
   form!: FormGroup;
-  constructor(private productService: ProductService,private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private productService: ProductService, private inventarioService: InventarioService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.getListProducts();
     this.buildForm();
   }
   getListProducts(){
-    this.productService.getProductList().toPromise().then(list => this.productList = list).catch(error => console.log(error));
+    this.productService.getProductList().toPromise().then(list =>{ 
+      this.productList = list;
+      this.productService.changeProductList(list);
+      
+    }).catch(error => console.log(error));
+    this.productService.customProductList.subscribe(list => this.productList=list);
   }
   onCrear(){
     this.guardar();
@@ -52,20 +58,20 @@ export class ProductoComponent implements OnInit {
   delete(product:Producto): void {
     this.productService.delete(product.idProducto).toPromise().then(idProducto => {
       Swal.fire('Producto ha sido eliminado del inventario correctamente');
-      this.getListProducts();
+      this.productService.removeProduct(product);
     }).catch(error => {
       console.log(error);
       Swal.fire('Ha ocurrido un problema por lo que no se pudo eliminar el producto del inventario');
     });
-    this.ngOnInit();
   }
 
   guardar(){
     
     const productToCreate = this.productService.buildProduct(this.form.value, this.product);
     console.log(this.product)
-    this.productService.create(this.productService.buildProduct(this.form.value, this.product)).toPromise().then(idProducto => {
-      this.getListProducts();  
+    this.productService.create(productToCreate).toPromise().then(idProducto => {
+      productToCreate.idProducto=idProducto;
+      this.productService.addProduct(productToCreate);
       Swal.fire('Producto adicionado correctamente');
     }).catch(error => {
       console.log(error);
@@ -76,8 +82,10 @@ export class ProductoComponent implements OnInit {
   update(): void {
     const inventarioToUpdate = this.productService.buildProduct(this.form.value, this.productoEdicion);
     inventarioToUpdate.idProducto=this.productoEdicion.idProducto;
-    this.productService.update(this.productService.buildProduct(inventarioToUpdate)).toPromise().then(idInventario => {
-        Swal.fire('Producto ha sido cambiado correctamente');
+    this.productService.update(inventarioToUpdate).toPromise().then(idInventario => {
+       this.inventarioService.changProductInInventarioList(inventarioToUpdate)
+      Swal.fire('Producto ha sido cambiado correctamente');
+      this.productService.changeProduct(this.productoEdicion,inventarioToUpdate);
         this.getListProducts();
     }).catch(error => {
       console.log(error);

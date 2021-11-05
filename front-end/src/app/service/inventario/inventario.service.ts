@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ComandoInventario } from 'src/app/comando/comando-inventario';
 import { Inventario } from 'src/app/model/inventario';
+import { Producto } from 'src/app/model/producto';
 import { ServiceUtil } from 'src/app/util/service-util';
 import { environment } from 'src/environments/environment';
 
@@ -29,10 +30,21 @@ export class InventarioService {
   }
 
   getAll(): Observable<Inventario[]> {
-    if (!this.inventarioList || this.inventarioList.value.length === 0) {
+     if (!this.inventarioList || this.inventarioList.value.length === 0) {
       return this.http.get<Inventario[]>(URL, {headers: this.serviceUtil.getSimpleHeader()});
     }
-    return this.inventarioList;
+    return this.inventarioList;  
+     /* return this.http.get<Inventario[]>(URL, {headers: this.serviceUtil.getSimpleHeader()});  */
+  }
+
+  changProductInInventarioList(producto:Producto){
+    this.inventarioList.subscribe(list => {
+      list.forEach(inventario =>{ 
+        if(inventario.producto.idProducto===producto.idProducto){
+          inventario.producto=producto;
+        }
+      });
+    })
   }
 
   create(comandoInventario: Partial<ComandoInventario>): Observable<{valor: number}> {

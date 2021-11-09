@@ -17,7 +17,7 @@ class ProductoConverterTest {
 		var productoConverter = new ProductoConverter();
 		var comandoProducto = new ComandoProducto();
 		try {
-			productoConverter.crear(comandoProducto);
+			productoConverter.editar(comandoProducto);
 		} catch (ExcepcionValorObligatorio e) {
 			assertEquals(EL_ID_PRODUCTO_NO_ES_VALIDO, e.getMessage());
 		}
@@ -35,7 +35,7 @@ class ProductoConverterTest {
 		String codigoEsperado = "0001";
 		String nombreEsperado = "MPU6050";
 		boolean activoEsperado = true;
-		var producto = productoConverter.crear(comandoProducto);
+		var producto = productoConverter.editar(comandoProducto);
 		assertEquals(idProductoEsperado, producto.getIdProducto());
 		assertEquals(codigoEsperado, producto.getCodigo());
 		assertEquals(nombreEsperado, producto.getNombre());

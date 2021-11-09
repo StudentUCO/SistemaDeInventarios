@@ -19,7 +19,7 @@ class InventarioConverterTest {
 		var inventarioConverter = new InventarioConverter();
 		var comandoInventario = new ComandoInventario();
 		try {
-			inventarioConverter.crear(comandoInventario);
+			inventarioConverter.editar(comandoInventario);
 		} catch (ExcepcionValorObligatorio e) {
 			assertEquals(EL_ID_INVENTARIO_NO_ES_VALIDO, e.getMessage());
 		}
@@ -61,7 +61,7 @@ class InventarioConverterTest {
 		Integer idInventarioEsperado = 1;
 		Integer idProductoEsperado = 1;
 		int cantidadEsperada = 100;
-		var inventario = inventarioConverter.crear(comandoInventario);
+		var inventario = inventarioConverter.editar(comandoInventario);
 		assertEquals(idInventarioEsperado, inventario.getIdInventario());
 		assertEquals(idProductoEsperado, inventario.getProducto().getIdProducto());
 		assertEquals(cantidadEsperada, inventario.getCantidad());

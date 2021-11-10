@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  my-sql-docker-compose:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - red
+    environment:
+      MYSQL_DATABASE: sistema
+      MYSQL_ROOT_PASSWORD: root
+      MY_ROOT_HOST: '%'
+  api-rest-sistema-de-inventarios-docker-compose:
+    image: api
+    ports: 
+      - "8083:8083"
+    restart: always
+    networks:
+      - red
+    depends_on:
+      - my-sql-docker-compose
+  front-end-sistema-de-inventarios-docker-compose:
+    image: front-sistema
+    ports:
+      - "8888:80"
+    networks:
+      - red
+networks: 
+  red:
